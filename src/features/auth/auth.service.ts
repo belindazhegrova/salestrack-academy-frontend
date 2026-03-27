@@ -6,13 +6,28 @@ export type User = {
   role: 'ADMIN' | 'AGENT';
 };
 
-export const loginApi = (data: { email: string; password: string }) =>
+export type LoginResponse = {
+  user: User;
+};
+
+
+export type RegisterResponse = {
+  message: string;
+  user: User;
+};
+
+export type LogoutResponse = {
+  message: string;
+};
+
+
+export const login = (data: { email: string; password: string }) =>
   apiFetch<{ user: User }>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 
-export const registerApi = (data: { email: string; password: string }) =>
+export const register = (data: { email: string; password: string }) =>
   apiFetch('/auth/register', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -21,7 +36,7 @@ export const registerApi = (data: { email: string; password: string }) =>
 export const getMe = () =>
   apiFetch<User>('/auth/me');
 
-export const logoutApi = () =>
+export const logout = () =>
   apiFetch('/auth/logout', {
     method: 'POST',
   });

@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { loginApi } from '@/features/auth/auth.service';
-import AuthCard from '@/components/ui/auth/AuthCard';
+import { login } from '@/features/auth/auth.service';
+import AuthCard from '@/components/auth/AuthCard';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function LoginPage() {
       setLoading(true);
       setError('');
 
-      const res = await loginApi({ email, password });
+      const res = await login({ email, password });
       if (res.user.role === 'ADMIN') {
         router.replace('/admin/dashboard');
       } else {
