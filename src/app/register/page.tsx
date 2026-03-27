@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { registerApi } from '@/features/auth/auth.service';
-import AuthCard from '@/components/ui/auth/AuthCard';
+import { register } from '@/features/auth/auth.service';
+import AuthCard from '@/components/auth/AuthCard';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function RegisterPage() {
       setLoading(true);
       setError('');
 
-      await registerApi({ email, password });
+      await register({ email, password });
 
       router.replace('/login');
     } catch (err: any) {
