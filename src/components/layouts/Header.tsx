@@ -19,6 +19,7 @@ export default function Header({ title = 'Dashboard' }: HeaderProps) {
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
+        localStorage.removeItem('token');
        window.location.href = '/login';
     }
   };
