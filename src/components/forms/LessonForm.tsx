@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Upload } from 'lucide-react';
 
 type LessonFormProps = {
   onSubmit: (formData: FormData) => void | Promise<void>;
@@ -81,10 +82,13 @@ export function LessonForm({ onSubmit, courseId }: LessonFormProps) {
           onChange={(e) => setContent(e.target.value)}
         />
       ) : (
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-        />
+        <div className="flex items-center gap-2">
+          <Upload size={18} className="text-gray-500" />
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
+      </div>
       )}
 
       <button className="btn btn-primary" onClick={handleSubmit}>
