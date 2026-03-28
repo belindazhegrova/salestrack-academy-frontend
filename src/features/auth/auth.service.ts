@@ -7,9 +7,9 @@ export type User = {
 };
 
 export type LoginResponse = {
+  access_token: string;
   user: User;
 };
-
 
 export type RegisterResponse = {
   message: string;
@@ -22,13 +22,13 @@ export type LogoutResponse = {
 
 
 export const login = (data: { email: string; password: string }) =>
-  apiFetch<{ user: User }>('/auth/login', {
+  apiFetch<LoginResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 
 export const register = (data: { email: string; password: string }) =>
-  apiFetch('/auth/register', {
+  apiFetch<RegisterResponse>('/auth/register', {
     method: 'POST',
     body: JSON.stringify(data),
   });
@@ -37,6 +37,6 @@ export const getMe = () =>
   apiFetch<User>('/auth/me');
 
 export const logout = () =>
-  apiFetch('/auth/logout', {
+  apiFetch<LogoutResponse>('/auth/logout', {
     method: 'POST',
   });

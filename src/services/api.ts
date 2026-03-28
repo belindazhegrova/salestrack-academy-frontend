@@ -4,11 +4,17 @@ export const apiFetch = async <T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> => {
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+
+  const isFormData = options.body instanceof FormData;
+
   const res = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
   });
@@ -23,6 +29,7 @@ export const apiFetch = async <T>(
 
     if (res.status === 401) {
       if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
         window.location.href = '/login';
       }
     }

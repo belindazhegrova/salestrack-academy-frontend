@@ -19,6 +19,7 @@ export default function LoginPage() {
       setError('');
 
       const res = await login({ email, password });
+      localStorage.setItem('token', res.access_token);
       if (res.user.role === 'ADMIN') {
         router.replace('/admin/dashboard');
       } else {

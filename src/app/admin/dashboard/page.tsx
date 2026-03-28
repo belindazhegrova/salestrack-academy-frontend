@@ -1,19 +1,12 @@
-import SideBar from '@/components/layouts/SideBar';
-import Header from '@/components/layouts/Header';
-
-
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminDashboardPage() {
   return (
-    <div className="flex min-h-screen">
-      <SideBar role="ADMIN" />
-
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 p-6 bg-gray-100">{children}</main>
+    <div>
+      <h1 className="mb-6 text-2xl font-bold">Dashboard</h1>
+      <div className="mt-6 rounded-xl bg-white p-5 shadow">
+        <h3 className="mb-3 text-lg font-semibold">Welcome</h3>
+        <p className="text-gray-600">
+          Manage courses, users, lessons, and quizzes from the admin panel.
+        </p>
       </div>
     </div>
   );
