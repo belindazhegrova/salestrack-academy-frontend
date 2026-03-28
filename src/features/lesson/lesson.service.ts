@@ -25,3 +25,9 @@ export const deleteLesson = (id: string) =>
   apiFetch(`/lessons/${id}`, {
     method: 'DELETE',
   });
+
+  export const reorderLessons = (data: { id: string; order: number }[]) =>
+  apiFetch('/lessons/reorder', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
