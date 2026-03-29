@@ -1,22 +1,21 @@
 'use client';
 
+import { useEffect, useState, useCallback } from 'react';
 import {
   DndContext,
   closestCenter,
+  type DragEndEvent,
 } from '@dnd-kit/core';
 
 import {
   arrayMove,
   SortableContext,
-  useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import { CSS } from '@dnd-kit/utilities';
-import { useEffect, useState } from 'react';
-
 import type { Lesson } from '@/features/lesson/lesson.service';
 import { reorderLessons } from '@/features/lesson/lesson.service';
+import SortableRow from './SortableRow';
 
 type LessonTableProps = {
   lessons: Lesson[];
@@ -24,13 +23,14 @@ type LessonTableProps = {
 };
 
 export function LessonTable({ lessons, onDelete }: LessonTableProps) {
-  const [items, setItems] = useState(lessons);
+  const [items, setItems] = useState<Lesson[]>(lessons);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setItems(lessons);
   }, [lessons]);
 
-  const handleDragEnd = async (event: any) => {
+  const handleDragEnd = useCallback(async (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
@@ -38,24 +38,32 @@ export function LessonTable({ lessons, onDelete }: LessonTableProps) {
     const oldIndex = items.findIndex((i) => i.id === active.id);
     const newIndex = items.findIndex((i) => i.id === over.id);
 
-    const newItems = arrayMove(items, oldIndex, newIndex);
+    const updated = arrayMove(items, oldIndex, newIndex);
+    setItems(updated);
 
-    setItems(newItems);
-
-    const payload = newItems.map((item, index) => ({
+    const payload = updated.map((item, index) => ({
       id: item.id,
       order: index + 1,
     }));
 
     try {
+      setLoading(true);
       await reorderLessons(payload);
     } catch (err) {
       console.error('Reorder failed', err);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [items]);
 
   return (
     <div className="card overflow-hidden">
+      {loading && (
+        <div className="p-2 text-sm text-gray-500">
+          Saving order...
+        </div>
+      )}
+
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={items.map((i) => i.id)}
@@ -85,55 +93,5 @@ export function LessonTable({ lessons, onDelete }: LessonTableProps) {
         </SortableContext>
       </DndContext>
     </div>
-  );
-}
-
-function SortableRow({
-  lesson,
-  index,
-  onDelete,
-}: {
-  lesson: Lesson;
-  index: number;
-  onDelete: (id: string) => void;
-}) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: lesson.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <tr
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      className="cursor-grab active:cursor-grabbing"
-    >
-
-      <td {...listeners}>☰ {index + 1}</td>
-
-      <td>{lesson.title}</td>
-
-      <td>
-        <span className="badge">{lesson.type}</span>
-      </td>
-
-      <td className="text-right">
-        <button
-          onClick={() => onDelete(lesson.id)}
-          className="text-red-500"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
   );
 }

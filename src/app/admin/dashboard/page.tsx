@@ -1,13 +1,37 @@
-export default function AdminDashboardPage() {
+'use client';
+
+import { useEffect, useState } from 'react';
+import { getStats } from '@/features/enrollment/enrollment.service';
+
+export default function DashboardPage() {
+  const [stats, setStats] = useState<any>(null);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const load = async () => {
+    const data = await getStats();
+    setStats(data);
+  };
+
+  if (!stats) return <p>Loading...</p>;
+
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-bold">Dashboard</h1>
-      <div className="mt-6 rounded-xl bg-white p-5 shadow">
-        <h3 className="mb-3 text-lg font-semibold">Welcome</h3>
-        <p className="text-gray-600">
-          Manage courses, users, lessons, and quizzes from the admin panel.
-        </p>
-      </div>
+    <div className="grid grid-cols-4 gap-4">
+      <Card title="Agents" value={stats.totalAgents} />
+      <Card title="Courses" value={stats.totalCourses} />
+      <Card title="Assignments" value={stats.totalAssignments} />
+      <Card title="Completed" value={stats.completedCourses} />
+    </div>
+  );
+}
+
+function Card({ title, value }: any) {
+  return (
+    <div className="card text-center">
+      <p className="text-gray-500">{title}</p>
+      <h2 className="text-2xl font-bold">{value}</h2>
     </div>
   );
 }

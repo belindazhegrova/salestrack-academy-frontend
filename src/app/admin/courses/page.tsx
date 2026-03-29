@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useCourses } from '@/hooks/useCourses';
+import { useCourses } from '@/features/course/course.hooks';
 import { CourseForm } from '@/components/forms/CourseForm';
 import { CourseTable } from '@/components/modules/course/CourseTable';
 

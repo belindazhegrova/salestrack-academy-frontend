@@ -45,3 +45,12 @@ export const deleteCourse = (id: string) =>
   apiFetch<{ message?: string }>(`/courses/${id}`, {
     method: 'DELETE',
   });
+
+  export const assignCourse = (data: {
+  userId: string;
+  courseId: string;
+}) =>
+  apiFetch('/courses/assign', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });

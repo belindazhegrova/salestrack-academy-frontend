@@ -15,7 +15,8 @@ export default function SideBar({ role }: SidebarProps) {
   const adminLinks = [
     { label: 'Dashboard', path: '/admin/dashboard' },
     { label: 'Courses', path: '/admin/courses' },
-    { label: 'Users', path: '/admin/users' },
+    { label: 'Assign Course', path: '/admin/assign' },
+    { label: 'Agents', path: '/admin/agents' }
   ];
 
   const agentLinks = [

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useLessons } from '@/hooks/useLessons';
+import { useLessons } from '@/features/lesson/lesson.hook';
 import { LessonForm } from '@/components/forms/LessonForm';
 import { LessonTable } from '@/components/modules/lesson/LessonTable';
 
