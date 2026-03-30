@@ -28,6 +28,7 @@ export default function CoursePage() {
   const [lessonProgress, setLessonProgress] = useState<any[]>([]);
   const [questions, setQuestions] = useState<any[]>([]);
 
+ 
   useEffect(() => {
     const load = async () => {
       const course = await getMyCourseDetails(courseId as string);
@@ -46,6 +47,7 @@ export default function CoursePage() {
 
   if (!courseData) return <p>Loading...</p>;
 
+
   const completedLessons = lessonProgress.filter((l) => l.completed).length;
   const totalLessons = courseData.course.lessons.length;
 
@@ -54,66 +56,134 @@ export default function CoursePage() {
     : 0;
 
 
-    const handleCompleteLesson = async (lessonId: string) => {
-  if (!user) return;
+  const handleCompleteLesson = async (lessonId: string) => {
+    if (!user?.userId) return;
 
-  await completeLesson(lessonId);
 
-  const updated = await getCourseLessonProgress(courseId as string);
-  setLessonProgress(updated);
+    setLessonProgress((prev) => {
+      const exists = prev.find((x) => x.lessonId === lessonId);
 
-  const completed = updated.filter((x) => x.completed).length;
-  const total = courseData.course.lessons.length;
-  const progress = Math.round((completed / total) * 100);
+      if (exists) {
+        return prev.map((x) =>
+          x.lessonId === lessonId ? { ...x, completed: true } : x
+        );
+      }
 
-  await updateProgress(user.id, courseId as string, progress);
-};
+      return [...prev, { lessonId, completed: true }];
+    });
 
+  
+    await completeLesson(lessonId);
+
+  
+    const updated = await getCourseLessonProgress(courseId as string);
+    setLessonProgress(updated);
+
+   
+    const completed = updated.filter((x) => x.completed).length;
+    const total = courseData.course.lessons.length;
+    const progress = Math.round((completed / total) * 100);
+
+    await updateProgress(user.userId, courseId as string, progress);
+
+  
+    const currentIndex = courseData.course.lessons.findIndex(
+      (l: any) => l.id === lessonId
+    );
+
+    const nextLesson = courseData.course.lessons[currentIndex + 1];
+    if (nextLesson) setSelectedLesson(nextLesson);
+  };
 
   return (
     <div className="flex gap-6">
       <div className="w-1/4">
         {courseData.course.lessons.map((l: any) => {
-          const done = lessonProgress.find((x) => x.lessonId === l.id)?.completed;
+          const done = lessonProgress.find(
+            (x) => x.id === l.id
+          )?.completed;
+          
+          const isActive = selectedLesson?.id === l.id;
 
           return (
             <div
               key={l.id}
               onClick={() => setSelectedLesson(l)}
-              className="cursor-pointer p-3 border mb-2"
+              className={`cursor-pointer p-3 border mb-2 rounded flex justify-between items-center transition
+
+                ${isActive ? 'bg-blue-100 border-blue-500' : ''}
+                ${done ? 'bg-green-100 border-green-500' : 'bg-white'}
+              `}
             >
-              {l.title} {done && '✅'}
+              <div className="flex flex-col">
+                <span className="font-medium">{l.title}</span>
+
+                <span
+                  className={`text-xs ${
+                    done ? 'text-green-600' : 'text-gray-500'
+                  }`}
+                >
+                  {done ? 'Completed' : 'Not completed'}
+                </span>
+              </div>
+
+              {done && (
+                <span className="text-green-600 font-bold text-lg">✓</span>
+              )}
             </div>
           );
         })}
       </div>
 
+  
       <div className="flex-1">
-        <p className="mb-2 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-gray-600 font-medium">
           Progress: {calculatedProgress}%
         </p>
 
         {selectedLesson && (
           <>
             <LessonViewerAgent lesson={selectedLesson} />
+            {(() => {
+              const isCompleted = lessonProgress.find(
+                (x) => x.lessonId === selectedLesson.id
+              )?.completed;
 
-            <button
-              onClick={() => handleCompleteLesson(selectedLesson.id)}
-              className="mt-4 px-4 py-2 bg-green-600 text-white rounded"
-            >
-              Mark as Completed
-            </button>
+              return (
+                <button
+                  disabled={isCompleted}
+                  onClick={() =>
+                    handleCompleteLesson(selectedLesson.id)
+                  }
+                  className={`mt-4 px-4 py-2 rounded transition
+                    ${
+                      isCompleted
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-green-600 text-white hover:bg-green-700'
+                    }
+                  `}
+                >
+                  {isCompleted ? 'Completed' : 'Mark as Completed'}
+                </button>
+              );
+            })()}
           </>
         )}
 
         {calculatedProgress === 100 && questions.length > 0 && user && (
-          <QuizAgentSection
-            questions={questions}
-            courseId={courseId as string}
-            onCompleted={async (score) => {
-              await updateQuizScore(user.id, courseId as string, score);
-            }}
-          />
+          <div className="mt-8">
+            <QuizAgentSection
+              questions={questions}
+              courseId={courseId as string}
+              onCompleted={async (score) => {
+                await updateQuizScore(
+                  user.userId,
+                  courseId as string,
+                  score
+                );
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

@@ -28,7 +28,6 @@ export default function SideBar({ role }: SidebarProps) {
   ];
 
   const agentLinks = [
-    { label: 'Dashboard', path: '/agent/dashboard' },
     { label: 'My Courses', path: '/agent/courses' },
     { label: 'Progress', path: '/agent/progress' },
   ];

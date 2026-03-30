@@ -6,7 +6,7 @@ import { getMe } from '@/features/auth/auth.service';
 type Role = 'ADMIN' | 'AGENT';
 
 type User = {
-  id: string;
+  userId: string;
   email: string;
   role: Role;
   name:string;

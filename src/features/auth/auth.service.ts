@@ -1,7 +1,7 @@
 import { apiFetch } from '@/services/api';
 
 export type User = {
-  id: string;
+  userId: string;
   email: string;
   role: 'ADMIN' | 'AGENT';
   name:string;
