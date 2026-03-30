@@ -5,6 +5,7 @@ import {
   getMyCourses,
   EnrollmentCourse,
 } from '@/features/enrollment/enrollment.service';
+import { downloadCertificate } from '@/features/enrollment/enrollment.service';
 
 export default function AgentProgressPage() {
   const [courses, setCourses] = useState<EnrollmentCourse[]>([]);
@@ -62,6 +63,9 @@ export default function AgentProgressPage() {
             : 'Not Started';
 
           const passed = (item.quizScore ?? 0) >= 80;
+
+          const canDownload =
+           item.completed && (item.quizScore ?? 0) >= 80;
 
           return (
             <div key={item.id} className="card">
@@ -122,6 +126,16 @@ export default function AgentProgressPage() {
                     </p>
                   )}
               </div>
+                  {canDownload && (
+                    <div className="mt-3 flex justify-end">
+                      <button
+                        onClick={() => downloadCertificate(item.id)}
+                        className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer"
+                      >
+                        Download Certificate
+                      </button>
+                    </div>
+                  )}
             </div>
           );
         })}

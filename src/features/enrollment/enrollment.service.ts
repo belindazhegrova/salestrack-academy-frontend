@@ -59,3 +59,24 @@ export const updateQuizScore = (
     method: 'PATCH',
     body: JSON.stringify({ quizScore }),
   });
+
+export const downloadCertificate = async (enrollmentId: string) => {
+  const blob = await apiFetch<Blob>(
+    `/enrollments/certificate/${enrollmentId}`,
+    {
+      method: 'GET',
+      responseType: 'blob',
+    }
+  );
+
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'certificate.pdf';
+  a.click();
+
+  window.URL.revokeObjectURL(url);
+};
+  
+  
+  
