@@ -8,7 +8,7 @@ type Answer = {
   isCorrect: boolean;
 };
 
-export default function QuizForm({ lessonId,onSuccess }: { lessonId: string , onSuccess: () => void;}) {
+export default function QuizForm({ courseId, onSuccess }: { courseId: string, onSuccess: () => void; }) {
   const [title, setTitle] = useState('');
   const [answers, setAnswers] = useState<Answer[]>([
     { text: '', isCorrect: false },
@@ -58,7 +58,7 @@ export default function QuizForm({ lessonId,onSuccess }: { lessonId: string , on
 
     await createQuestion({
       title,
-      lessonId,
+      courseId,
       answers,
     });
 

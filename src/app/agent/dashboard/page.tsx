@@ -1,19 +1,13 @@
-import Sidebar from '@/components/layouts/SideBar';
-import Header from '@/components/layouts/Header';
+'use client';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+
+
+export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar role="ADMIN" />
-
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 p-6 bg-gray-100">{children}</main>
-      </div>
+    <div className="grid grid-cols-4 gap-4">
+     helli
     </div>
   );
 }
+
+

@@ -44,12 +44,7 @@ export default function SortableRow({ lesson, index, onDelete }: Props) {
       </td>
 
       <td className="text-right space-x-3">
-        <Link
-          href={`/admin/courses/${lesson.courseId}/lessons/${lesson.id}/quiz`}
-          className="text-blue-600 hover:underline"
-        >
-          Quiz
-        </Link>
+  
 
         <button
           onClick={() => onDelete(lesson.id)}
