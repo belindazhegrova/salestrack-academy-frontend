@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useLessons } from '@/features/lesson/lesson.hook';
 import { LessonForm } from '@/components/forms/LessonForm';
-import { LessonTable } from '@/components/modules/lesson/LessonTable';
+import { LessonTable } from '@/components/modules/admin/lesson/LessonTable';
 
 export default function Page() {
   const params = useParams();

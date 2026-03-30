@@ -45,7 +45,7 @@ export function CourseTable({ courses, onDelete }: CourseTableProps) {
               <td className="space-x-3 p-4 text-right">
                 <button
                   onClick={() => router.push(`/admin/courses/${course.id}/lessons`)}
-                  className="text-blue-600"
+                  className="text-blue-600 cursor-pointer"
                 >
                   Manage Lesson
                 </button>
@@ -53,14 +53,14 @@ export function CourseTable({ courses, onDelete }: CourseTableProps) {
                     onClick={() =>
                       router.push(`/admin/courses/${course.id}/quiz`)
                     }
-                    className="text-green-600"
+                    className="text-green-600 cursor-pointer"
                   >
                     Quiz
                   </button>
 
                 <button
                   onClick={() => onDelete(course.id)}
-                  className="text-red-500"
+                  className="text-red-500 cursor-pointer"
                 >
                   Delete
                 </button>

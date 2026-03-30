@@ -15,9 +15,9 @@ import {
 } from '@/features/lesson-progress/lessonProgress.service';
 
 import { getQuestions } from '@/features/quiz/quiz.service';
-import LessonViewerAgent from '@/components/modules/lesson/LessonViewerAgent';
+import LessonViewerAgent from '@/components/modules/agent/lesson/LessonViewer';
 import { useAuth } from '@/features/auth/useAuth.hook';
-import QuizAgentSection from '@/components/modules/quiz/QuizAgentSection';
+import QuizAgentSection from '@/components/modules/agent/quiz/QuizSection';
 
 export default function CoursePage() {
   const { courseId } = useParams();

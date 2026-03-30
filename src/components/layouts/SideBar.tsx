@@ -4,13 +4,21 @@ import { usePathname, useRouter } from 'next/navigation';
 
 type Role = 'ADMIN' | 'AGENT';
 
-export default function SideBar({ role }: { role: Role }) {
+type SidebarProps = {
+  role: Role;
+};
+
+export default function SideBar({ role }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const sidebarBg =
-  role === 'ADMIN'
-    ? 'bg-[var(--primary)]'   
-    : 'bg-emerald-700';       
+
+  const sidebarClass =
+    role === 'ADMIN' ? 'bg-[var(--primary)]' : 'bg-[var(--agent)]';
+
+  const activeClass =
+    role === 'ADMIN'
+      ? 'bg-white text-[var(--primary)] font-semibold'
+      : 'bg-white text-[var(--agent)] font-semibold';
 
   const adminLinks = [
     { label: 'Dashboard', path: '/admin/dashboard' },
@@ -27,21 +35,31 @@ export default function SideBar({ role }: { role: Role }) {
 
   const links = role === 'ADMIN' ? adminLinks : agentLinks;
 
-  return (
-    <aside className={`w-64 min-h-screen  text-white ${sidebarBg} p-6 flex flex-col gap-4`}>
-      <h2 className="text-xl font-bold mb-6">SalesTrack</h2>
+  const isActive = (path: string) => {
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
 
-      {links.map((link) => (
-        <button
-          key={link.path}
-          onClick={() => router.push(link.path)}
-          className={`text-left px-4 py-2 rounded ${
-            pathname === link.path ? 'bg-white text-black' : ''
-          }`}
-        >
-          {link.label}
-        </button>
-      ))}
+  return (
+    <aside
+      className={`w-64 min-h-screen ${sidebarClass} text-white p-6 flex flex-col`}
+    >
+      <h2 className="text-2xl font-bold mb-8">SalesTrack</h2>
+
+      <nav className="flex flex-col gap-2">
+        {links.map((link) => (
+          <button
+            key={link.path}
+            onClick={() => router.push(link.path)}
+            className={`w-full text-left px-4 py-3 rounded-xl transition font-medium ${
+              isActive(link.path)
+                ? activeClass
+                : 'text-white/90 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            {link.label}
+          </button>
+        ))}
+      </nav>
     </aside>
   );
 }
