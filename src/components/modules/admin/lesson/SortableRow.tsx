@@ -48,7 +48,7 @@ export default function SortableRow({ lesson, index, onDelete }: Props) {
 
         <button
           onClick={() => onDelete(lesson.id)}
-          className="text-red-500 hover:underline"
+          className="text-red-500 hover:underline cursor-pointer"
         >
           Delete
         </button>

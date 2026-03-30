@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useCourses } from '@/features/course/course.hooks';
 import { CourseForm } from '@/components/forms/CourseForm';
-import { CourseTable } from '@/components/modules/course/CourseTable';
+import { CourseTable } from '@/components/modules/admin/course/CourseTable';
 
 export default function Page() {
   const { courses, loading, fetchCourses, create, remove } = useCourses();

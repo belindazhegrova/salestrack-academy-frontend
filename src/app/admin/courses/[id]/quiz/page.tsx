@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import QuizForm from '@/components/forms/QuizForm';
-import QuizList from '@/components/modules/quiz/QuizList';
+import QuizList from '@/components/modules/admin/quiz/QuizList';
 import { getQuestions, type QuizQuestion } from '@/features/quiz/quiz.service';
 
 export default function Page() {

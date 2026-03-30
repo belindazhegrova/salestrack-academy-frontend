@@ -25,7 +25,8 @@ export default function CreateAgentModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl w-full max-w-md space-y-4">
+      <div className="bg-white p-6 rounded-2xl w-full max-w-md space-y-5 shadow-lg">
+        
         <h2 className="text-xl font-semibold">Create Agent</h2>
 
         <input
@@ -43,10 +44,15 @@ export default function CreateAgentModal({
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <div className="flex justify-end gap-2">
-          <button onClick={onClose}>Cancel</button>
+        <div className="flex justify-end gap-3 pt-2">
+          <button className="btn" onClick={onClose}>
+            Cancel
+          </button>
 
-          <button className="btn-primary" onClick={handleSubmit}>
+          <button
+            className="btn btn-primary"
+            onClick={handleSubmit}
+          >
             Create
           </button>
         </div>

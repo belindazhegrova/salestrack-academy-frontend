@@ -41,7 +41,7 @@ export default function QuizList({
 
           <button
             onClick={() => handleDelete(q.id)}
-            className="text-red-500 mt-2"
+            className="text-red-500 mt-2 cursor-pointer"
           >
             Delete
           </button>
