@@ -110,7 +110,7 @@ export default function QuizSection({
                 : 'text-red-600 font-semibold'
             }
           >
-            {result.passed ? 'Passed 🎉' : 'Failed ❌'}
+            {result.passed ? 'Passed' : 'Failed the quiz'}
           </p>
         </div>
       )}
