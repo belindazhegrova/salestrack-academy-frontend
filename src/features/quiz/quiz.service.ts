@@ -29,19 +29,25 @@ export type CreateQuestionPayload = {
   }[];
 };
 
+export type SubmitQuizPayload = {
+  courseId: string;
+  answers: {
+    questionId: string;
+    answerId: string;
+  }[];
+};
+
+export type SubmitQuizResponse = {
+  score: number;
+  passed: boolean;
+};
+
 export const getQuestions = (courseId: string) =>
   apiFetch<QuizQuestion[]>(`/quiz?courseId=${courseId}`);
 
 export const getQuizByCourse = (courseId: string) =>
   apiFetch<Quiz>(`/quiz/course/${courseId}`);
 
-
-
-export const createQuiz = (data: { courseId: string }) =>
-  apiFetch<Quiz>('/quiz', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
 
   export const createQuestion = (data: CreateQuestionPayload) =>
   apiFetch('/quiz', {
@@ -52,4 +58,10 @@ export const createQuiz = (data: { courseId: string }) =>
 export const deleteQuestion = (id: string) =>
   apiFetch(`/quiz/${id}`, {
     method: 'DELETE',
+  });
+
+  export const submitQuiz = (data: SubmitQuizPayload) =>
+  apiFetch<SubmitQuizResponse>('/quiz/submit', {
+    method: 'POST',
+    body: JSON.stringify(data),
   });
