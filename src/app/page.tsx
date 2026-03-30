@@ -16,7 +16,7 @@ export default function Home() {
     } else if (user.role === 'ADMIN') {
       router.replace('/admin/dashboard');
     } else {
-      router.replace('/agent/dashboard');
+      router.replace('/agent/courses');
     }
   }, [user, loading]);
 

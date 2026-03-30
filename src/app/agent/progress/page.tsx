@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getMyCourses, EnrollmentCourse } from '@/features/enrollment/enrollment.service';
+import {
+  getMyCourses,
+  EnrollmentCourse,
+} from '@/features/enrollment/enrollment.service';
 
 export default function AgentProgressPage() {
   const [courses, setCourses] = useState<EnrollmentCourse[]>([]);
@@ -10,10 +13,40 @@ export default function AgentProgressPage() {
     getMyCourses().then(setCourses);
   }, []);
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">My Progress</h1>
+  const totalCourses = courses.length;
+  const completedCourses = courses.filter((c) => c.completed).length;
+  const avgProgress =
+    courses.length > 0
+      ? Math.round(
+          courses.reduce((acc, c) => acc + c.progress, 0) / courses.length
+        )
+      : 0;
 
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">My Progress</h1>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card">
+          <p className="text-sm text-gray-500">Total Courses</p>
+          <p className="text-2xl font-bold">{totalCourses}</p>
+        </div>
+
+        <div className="card">
+          <p className="text-sm text-gray-500">Completed</p>
+          <p className="text-2xl font-bold text-green-600">
+            {completedCourses}
+          </p>
+        </div>
+
+        <div className="card">
+          <p className="text-sm text-gray-500">Avg Progress</p>
+          <p className="text-2xl font-bold text-agent">
+            {avgProgress}%
+          </p>
+        </div>
+      </div>
+
+  
       <div className="space-y-4">
         {courses.map((item) => {
           const totalLessons = item.course.lessons.length;
@@ -31,33 +64,64 @@ export default function AgentProgressPage() {
           const passed = (item.quizScore ?? 0) >= 80;
 
           return (
-       <div
-            key={item.id}
-            className="border rounded-lg p-4 bg-white shadow"
-            >
-            <h2 className="text-lg font-semibold">{item.course.title}</h2>
+            <div key={item.id} className="card">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">
+                  {item.course.title}
+                </h2>
 
-            <div className="w-full bg-gray-200 rounded h-2 mt-3 mb-2">
+                <span
+                  className={`text-sm font-medium ${
+                    item.completed
+                      ? 'text-green-600'
+                      : 'text-gray-500'
+                  }`}
+                >
+                  {status}
+                </span>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded h-2 mt-3 mb-3">
                 <div
-                className="bg-blue-600 h-2 rounded"
-                style={{ width: `${item.progress}%` }}
+                  className="h-2 rounded"
+                  style={{
+                    width: `${item.progress}%`,
+                    backgroundColor: 'var(--agent)',
+                  }}
                 />
-            </div>
+              </div>
 
-            <p>Progress: {item.progress}%</p>
-            <p>Status: {status}</p>
-            <p>
-                Lessons: {completedLessons} / {totalLessons}
-            </p>
-
-            {item.quizScore !== null && item.quizScore !== undefined && (
-                <>
-                <p>Quiz Score: {item.quizScore}%</p>
-                <p className={passed ? 'text-green-600' : 'text-red-600'}>
-                    {passed ? 'Passed ✅' : 'Failed ❌'}
+              <div className="grid grid-cols-3 gap-4 text-sm">
+                <p>
+                  <span className="text-gray-500">Progress:</span>{' '}
+                  <span className="font-medium text-agent">
+                    {item.progress}%
+                  </span>
                 </p>
-                </>
-            )}
+
+                <p>
+                  <span className="text-gray-500">Lessons:</span>{' '}
+                  {completedLessons} / {totalLessons}
+                </p>
+
+                {item.quizScore !== null &&
+                  item.quizScore !== undefined && (
+                    <p>
+                      <span className="text-gray-500">
+                        Quiz:
+                      </span>{' '}
+                      <span
+                        className={
+                          passed
+                            ? 'text-green-600 font-medium'
+                            : 'text-red-600 font-medium'
+                        }
+                      >
+                        {item.quizScore}% ({passed ? 'Passed' : 'Failed'})
+                      </span>
+                    </p>
+                  )}
+              </div>
             </div>
           );
         })}

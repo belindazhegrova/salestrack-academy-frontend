@@ -23,7 +23,7 @@ export default function AdminLayout({
     }
 
     if (user.role !== 'ADMIN') {
-      router.replace('/agent/dashboard');
+      router.replace('/agent/courses')
     }
   }, [user, loading, router]);
 

@@ -5,8 +5,7 @@
 
 :root {
   --primary: #1e3a8a;
-  --agent: #15803d; /* ✅ green for agents */
-
+  --agent: #15803d; 
   --background: #f3f4f6;
   --foreground: #171717;
   --card: #ffffff;

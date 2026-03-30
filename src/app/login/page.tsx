@@ -23,7 +23,7 @@ export default function LoginPage() {
       if (res.user.role === 'ADMIN') {
         router.replace('/admin/dashboard');
       } else {
-        router.replace('/agent/dashboard');
+        router.replace('/agent/courses');
       }
     } catch (err: any) {
       setError(err.message || 'Login failed');
