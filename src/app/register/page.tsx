@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
@@ -18,7 +19,7 @@ export default function RegisterPage() {
       setLoading(true);
       setError('');
 
-      await register({ email, password });
+      await register({ email, password,name });
 
       router.replace('/login');
     } catch (err: any) {
@@ -38,6 +39,13 @@ export default function RegisterPage() {
         <h2 className="text-xl font-semibold text-center text-[var(--primary)]">
           Register
         </h2>
+
+        <input
+        placeholder="Full Name"
+        className="border p-3 rounded"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        />
 
         <input
           placeholder="Email"

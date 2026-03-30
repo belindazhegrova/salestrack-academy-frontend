@@ -4,6 +4,7 @@ export type User = {
   id: string;
   email: string;
   role: 'ADMIN' | 'AGENT';
+  name:string;
 };
 
 export type LoginResponse = {
@@ -27,7 +28,7 @@ export const login = (data: { email: string; password: string }) =>
     body: JSON.stringify(data),
   });
 
-export const register = (data: { email: string; password: string }) =>
+export const register = (data: { email: string; password: string ,name:string}) =>
   apiFetch<RegisterResponse>('/auth/register', {
     method: 'POST',
     body: JSON.stringify(data),

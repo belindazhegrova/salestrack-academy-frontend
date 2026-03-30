@@ -7,16 +7,17 @@ export default function CreateAgentModal({
   onCreate,
 }: {
   onClose: () => void;
-  onCreate: (email: string, password: string) => Promise<void>;
+  onCreate: (email: string, password: string,name:string) => Promise<void>;
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
   const handleSubmit = async () => {
     if (!email || !password) return alert('Fill all fields');
 
     try {
-      await onCreate(email, password);
+      await onCreate(email, password,name );
       onClose();
     } catch (e: any) {
       alert(e.message || 'Error');
@@ -28,6 +29,13 @@ export default function CreateAgentModal({
       <div className="bg-white p-6 rounded-2xl w-full max-w-md space-y-5 shadow-lg">
         
         <h2 className="text-xl font-semibold">Create Agent</h2>
+
+        <input
+          placeholder="Full Name"
+          className="input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
         <input
           className="input"
