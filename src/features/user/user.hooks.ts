@@ -29,9 +29,9 @@ export function useAgents() {
     fetchAgents();
   }, [fetchAgents]);
 
-  const create = async (email: string, password: string) => {
+  const create = async (email: string, password: string, name: string ) => {
     try {
-      await createAgent({ email, password });
+      await createAgent({ email, password ,name});
       await fetchAgents();
     } catch (e) {
       console.error('Create agent failed', e);

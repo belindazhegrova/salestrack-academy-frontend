@@ -21,6 +21,7 @@ export const getAgents = () => apiFetch<Agent[]>('/users/agents');
 export const createAgent = (data: {
   email: string;
   password: string;
+  name:string;
 }) =>
   apiFetch('/users/agents', {
     method: 'POST',
