@@ -47,8 +47,16 @@ export function CourseTable({ courses, onDelete }: CourseTableProps) {
                   onClick={() => router.push(`/admin/courses/${course.id}/lessons`)}
                   className="text-blue-600"
                 >
-                  Manage
+                  Manage Lesson
                 </button>
+                  <button
+                    onClick={() =>
+                      router.push(`/admin/courses/${course.id}/quiz`)
+                    }
+                    className="text-green-600"
+                  >
+                    Quiz
+                  </button>
 
                 <button
                   onClick={() => onDelete(course.id)}

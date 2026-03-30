@@ -6,7 +6,7 @@ import SideBar from '@/components/layouts/SideBar';
 import Header from '@/components/layouts/Header';
 import { useAuth } from '@/features/auth/useAuth.hook';
 
-export default function AdminLayout({
+export default function AgentLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -22,12 +22,12 @@ export default function AdminLayout({
       return;
     }
 
-    if (user.role !== 'ADMIN') {
-      router.replace('/agent/dashboard');
+    if (user.role !== 'AGENT') {
+      router.replace('/admin/dashboard');
     }
   }, [user, loading, router]);
 
-  if (loading || !user || user.role !== 'ADMIN') {
+  if (loading || !user || user.role !== 'AGENT') {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading dashboard...</p>
