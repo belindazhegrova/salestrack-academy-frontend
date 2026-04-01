@@ -9,7 +9,7 @@ type User = {
   userId: string;
   email: string;
   role: Role;
-  name:string;
+  name: string;
 };
 
 export function useAuth() {
@@ -17,26 +17,27 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const cached = localStorage.getItem('user');
-
-    if (cached) {
-      setUser(JSON.parse(cached));
-      setLoading(false);
-    }
-
-    const fetchUser = async () => {
+    const initAuth = async () => {
       try {
+        const cached = localStorage.getItem('user');
+
+        if (cached) {
+          setUser(JSON.parse(cached)); 
+        }
+
         const data = await getMe();
         localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
-      } catch {
+      } catch (e) {
+        console.log('Auth failed');
         setUser(null);
+        localStorage.removeItem('user');
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     };
 
-    fetchUser();
+    initAuth();
   }, []);
 
   return { user, loading };
