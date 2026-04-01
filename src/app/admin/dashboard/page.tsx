@@ -15,7 +15,15 @@ export default function DashboardPage() {
     setStats(data);
   };
 
-  if (!stats) return <p>Loading...</p>;
+ if (!stats) {
+   return (
+      <div className="w-full">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+          <div className="h-full w-1/3 rounded-full bg-[var(--primary)] animate-progress" />
+        </div>
+      </div>
+    );
+}
 
   return (
     <div className="grid grid-cols-4 gap-4">

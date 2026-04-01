@@ -7,11 +7,35 @@ import { getFileUrl } from '@/utils/fileUrl';
 
 export default function AgentCourses() {
   const [courses, setCourses] = useState<any[]>([]);
+   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    getMyCourses().then(setCourses);
+    loadAgentCourse();
   }, []);
+
+    const loadAgentCourse = async () => {
+    try {
+      const data = await getMyCourses();
+      setCourses(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+    if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px] px-6">
+        <div className="w-full max-w-md">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+            <div className="h-full w-1/3 rounded-full bg-[var(--agent)] animate-progress" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { login, persistAuthSession } from '@/features/auth/auth.service';
+import { login, persistAuthSession ,clearAuthSession} from '@/features/auth/auth.service';
 import AuthCard from '@/components/auth/AuthCard';
 
 export default function LoginPage() {
@@ -18,6 +18,7 @@ const handleLogin = async () => {
   try {
     setLoading(true);
     setError('');
+     clearAuthSession();
 
     const res = await login({ email, password });
     persistAuthSession(res.access_token);

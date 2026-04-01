@@ -12,30 +12,49 @@ export function CourseForm({ onSubmit, loading }: CourseFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState('');
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim() || !description.trim()) {
-      alert('All fields required');
+      setError('All fields are required');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-
-    if (file) {
-      formData.append('thumbnail', file);
+    if (description.trim().length < 5) {
+      setError('Description must be at least 5 characters');
+      return;
     }
 
-    onSubmit(formData);
+    try {
+      setError('');
 
-    setTitle('');
-    setDescription('');
-    setFile(null);
+      const formData = new FormData();
+      formData.append('title', title.trim());
+      formData.append('description', description.trim());
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      if (file) {
+        formData.append('thumbnail', file);
+      }
+
+      await onSubmit(formData);
+
+      setTitle('');
+      setDescription('');
+      setFile(null);
+      setError('');
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (err: any) {
+      const message =
+        err?.response?.message?.[0] ||
+        err?.message ||
+        'Something went wrong';
+
+      setError(message);
     }
   };
 
@@ -48,14 +67,20 @@ export function CourseForm({ onSubmit, loading }: CourseFormProps) {
           className="input"
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            if (error) setError('');
+          }}
         />
 
         <input
           className="input"
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            if (error) setError('');
+          }}
         />
 
         <div
@@ -75,10 +100,15 @@ export function CourseForm({ onSubmit, loading }: CourseFormProps) {
             ref={fileInputRef}
             type="file"
             className="hidden"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e) => {
+              setFile(e.target.files?.[0] || null);
+              if (error) setError('');
+            }}
           />
         </div>
       </div>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
       <button
         className="btn btn-primary"

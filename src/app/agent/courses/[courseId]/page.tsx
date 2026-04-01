@@ -45,7 +45,14 @@ export default function CoursePage() {
     load();
   }, [courseId]);
 
-  if (!courseData) return <p>Loading...</p>;
+  if (!courseData)   
+    return (
+      <div className="w-full">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+          <div className="h-full w-1/3 rounded-full bg-[var(--agent)] animate-progress" />
+        </div>
+      </div>
+    );
 
 
   const completedLessons = lessonProgress.filter((l) => l.completed).length;

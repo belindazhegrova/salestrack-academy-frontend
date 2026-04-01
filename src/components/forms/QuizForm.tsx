@@ -8,19 +8,26 @@ type Answer = {
   isCorrect: boolean;
 };
 
-export default function QuizForm({ courseId, onSuccess }: { courseId: string, onSuccess: () => void; }) {
+export default function QuizForm({
+  courseId,
+  onSuccess,
+}: {
+  courseId: string;
+  onSuccess: () => void;
+}) {
   const [title, setTitle] = useState('');
   const [answers, setAnswers] = useState<Answer[]>([
     { text: '', isCorrect: false },
     { text: '', isCorrect: false },
   ]);
+  const [loading, setLoading] = useState(false); // ✅ NEW
 
   const addAnswer = () => {
     setAnswers([...answers, { text: '', isCorrect: false }]);
   };
 
   const removeAnswer = (index: number) => {
-    if (answers.length <= 2) return; // minimum 2 answers
+    if (answers.length <= 2) return;
     setAnswers(answers.filter((_, i) => i !== index));
   };
 
@@ -56,25 +63,33 @@ export default function QuizForm({ courseId, onSuccess }: { courseId: string, on
       return;
     }
 
-    await createQuestion({
-      title,
-      courseId,
-      answers,
-    });
+    try {
+      setLoading(true);
 
-    onSuccess();
-    setTitle('');
-    setAnswers([
-      { text: '', isCorrect: false },
-      { text: '', isCorrect: false },
-    ]);
-    
+      await createQuestion({
+        title,
+        courseId,
+        answers,
+      });
+
+      onSuccess();
+
+      setTitle('');
+      setAnswers([
+        { text: '', isCorrect: false },
+        { text: '', isCorrect: false },
+      ]);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save question');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="card space-y-6">
       <h2 className="text-lg font-semibold">Add Question</h2>
-
 
       <input
         className="input"
@@ -83,14 +98,9 @@ export default function QuizForm({ courseId, onSuccess }: { courseId: string, on
         onChange={(e) => setTitle(e.target.value)}
       />
 
-
       <div className="space-y-3">
         {answers.map((a, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-3 border p-2 rounded"
-          >
-           
+          <div key={i} className="flex items-center gap-3 border p-2 rounded">
             <input
               type="radio"
               name="correctAnswer"
@@ -98,7 +108,6 @@ export default function QuizForm({ courseId, onSuccess }: { courseId: string, on
               onChange={() => selectCorrect(i)}
             />
 
-          
             <input
               className="input flex-1"
               placeholder={`Answer ${i + 1}`}
@@ -106,10 +115,10 @@ export default function QuizForm({ courseId, onSuccess }: { courseId: string, on
               onChange={(e) => updateAnswerText(i, e.target.value)}
             />
 
-         
             <button
               onClick={() => removeAnswer(i)}
               className="text-red-500 text-sm"
+              disabled={loading}
             >
               ✕
             </button>
@@ -117,14 +126,16 @@ export default function QuizForm({ courseId, onSuccess }: { courseId: string, on
         ))}
       </div>
 
-      
-      <button onClick={addAnswer} className="btn">
+      <button onClick={addAnswer} className="btn" disabled={loading}>
         + Add Answer
       </button>
 
-   
-      <button onClick={handleSubmit} className="btn btn-primary">
-        Save Question
+      <button
+        onClick={handleSubmit}
+        className="btn btn-primary"
+        disabled={loading}
+      >
+        {loading ? 'Saving...' : 'Save Question'}
       </button>
     </div>
   );
