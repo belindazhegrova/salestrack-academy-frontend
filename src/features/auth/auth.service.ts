@@ -1,5 +1,21 @@
 import { apiFetch } from '@/services/api';
 
+const TOKEN_STORAGE_KEY = 'token';
+const ACCESS_COOKIE = 'access_token';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
+
+export function persistAuthSession(accessToken: string) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(TOKEN_STORAGE_KEY, accessToken);
+  document.cookie = `${ACCESS_COOKIE}=${encodeURIComponent(accessToken)}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+export function clearAuthSession() {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  document.cookie = `${ACCESS_COOKIE}=; path=/; max-age=0; SameSite=Lax`;
+}
+
 export type User = {
   userId: string;
   email: string;

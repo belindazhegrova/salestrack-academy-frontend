@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { login } from '@/features/auth/auth.service';
+import { login, persistAuthSession } from '@/features/auth/auth.service';
 import AuthCard from '@/components/auth/AuthCard';
 
 export default function LoginPage() {
@@ -20,6 +20,7 @@ const handleLogin = async () => {
     setError('');
 
     const res = await login({ email, password });
+    persistAuthSession(res.access_token);
 
     router.push(
       res.user.role === 'ADMIN'

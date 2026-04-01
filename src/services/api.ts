@@ -11,9 +11,10 @@ export const apiFetch = async <T>(
 
   const res = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    credentials: 'include', 
+    credentials: 'include',
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
   });
@@ -29,6 +30,8 @@ export const apiFetch = async <T>(
     if (res.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
+        document.cookie =
+          'access_token=; path=/; max-age=0; SameSite=Lax';
         window.location.href = '/login';
       }
     }
