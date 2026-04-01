@@ -13,24 +13,30 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      setLoading(true);
-      setError('');
 
-      const res = await login({ email, password });
-      localStorage.setItem('token', res.access_token);
-      if (res.user.role === 'ADMIN') {
-        router.replace('/admin/dashboard');
-      } else {
-        router.replace('/agent/courses');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
-    } finally {
-      setLoading(false);
+const handleLogin = async () => {
+  try {
+    setLoading(true);
+    setError('');
+
+    const res = await login({ email, password });
+
+    localStorage.setItem('token', res.access_token);
+
+  
+    localStorage.setItem('user', JSON.stringify(res.user));
+
+    if (res.user.role === 'ADMIN') {
+      router.replace('/admin/dashboard');
+    } else {
+      router.replace('/agent/courses');
     }
-  };
+  } catch (err: any) {
+    setError(err.message || 'Login failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 gap-6 px-4">
