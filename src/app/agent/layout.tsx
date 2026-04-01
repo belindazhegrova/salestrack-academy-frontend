@@ -23,7 +23,7 @@ export default function AgentLayout({
     }
 
     if (user.role !== 'AGENT') {
-      router.replace('/admin/dashboard');
+      window.location.href = '/admin/dashboard';;
     }
   }, [user, loading, router]);
 

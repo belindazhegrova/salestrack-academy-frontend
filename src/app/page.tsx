@@ -14,9 +14,9 @@ export default function Home() {
     if (!user) {
       router.replace('/login');
     } else if (user.role === 'ADMIN') {
-      router.replace('/admin/dashboard');
+     window.location.href = '/admin/dashboard';
     } else {
-      router.replace('/agent/courses');
+     window.location.href = '/agent/courses';
     }
   }, [user, loading]);
 

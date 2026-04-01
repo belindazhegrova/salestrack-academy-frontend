@@ -27,9 +27,9 @@ const handleLogin = async () => {
     localStorage.setItem('user', JSON.stringify(res.user));
 
     if (res.user.role === 'ADMIN') {
-      router.replace('/admin/dashboard');
+      window.location.href = '/admin/dashboard';
     } else {
-      router.replace('/agent/courses');
+     window.location.href = '/agent/courses';
     }
   } catch (err: any) {
     setError(err.message || 'Login failed');
