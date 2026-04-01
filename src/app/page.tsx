@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
+
 export default function Home() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p>Welcome</p>
-    </div>
-  );
+  useEffect(() => {
+    window.location.href = '/login';
+  }, []);
+
+  return null;
 }

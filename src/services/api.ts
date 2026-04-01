@@ -14,7 +14,6 @@ export const apiFetch = async <T>(
     credentials: 'include', 
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
   });

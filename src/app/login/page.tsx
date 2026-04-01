@@ -21,13 +21,11 @@ const handleLogin = async () => {
 
     const res = await login({ email, password });
 
-    localStorage.setItem('token', res.access_token);
-    localStorage.setItem('user', JSON.stringify(res.user));
-
-    window.location.href =
+    router.push(
       res.user.role === 'ADMIN'
         ? '/admin/dashboard'
-        : '/agent/courses';
+        : '/agent/courses'
+    );
 
   } catch (err: any) {
     setError(err.message || 'Login failed');
@@ -73,6 +71,16 @@ const handleLogin = async () => {
         </button>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
+
+             <p className="text-sm text-center text-gray-500">
+            Don't have an account?{' '}
+          <span
+            onClick={() => router.replace('/register')}
+            className="text-[var(--primary)] font-medium cursor-pointer"
+          >
+            Register
+          </span>
+        </p>
       </AuthCard>
     </div>
   );
