@@ -17,14 +17,14 @@ export default function AdminLayout({
   useEffect(() => {
     if (loading) return;
 
-    if (!user) {
-      router.replace('/login');
-      return;
-    }
+if (!user) {
+  window.location.href = '/login';
+  return;
+}
 
-    if (user.role !== 'ADMIN') {
-      router.replace('/agent/courses')
-    }
+if (user.role !== 'ADMIN') {
+  window.location.href = '/agent/courses';
+}
   }, [user, loading, router]);
 
   if (loading || !user || user.role !== 'ADMIN') {

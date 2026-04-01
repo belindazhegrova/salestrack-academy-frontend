@@ -3,51 +3,40 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { login } from '@/features/auth/auth.service';
-import { useAuth } from '@/features/auth/useAuth.hook';
 import AuthCard from '@/components/auth/AuthCard';
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const { user, loading: authLoading } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // ✅ protect login page
-  useEffect(() => {
-    if (authLoading) return;
+const handleLogin = async () => {
+  try {
+    setLoading(true);
+    setError('');
 
-    if (user) {
-      window.location.href =
-        user.role === 'ADMIN'
-          ? '/admin/dashboard'
-          : '/agent/courses';
-    }
-  }, [user, authLoading]);
+    const res = await login({ email, password });
 
-  const handleLogin = async () => {
-    try {
-      setLoading(true);
-      setError('');
+    localStorage.setItem('token', res.access_token);
+    localStorage.setItem('user', JSON.stringify(res.user));
 
-      const res = await login({ email, password });
+    window.location.href =
+      res.user.role === 'ADMIN'
+        ? '/admin/dashboard'
+        : '/agent/courses';
 
-      localStorage.setItem('token', res.access_token);
-      localStorage.setItem('user', JSON.stringify(res.user));
+  } catch (err: any) {
+    setError(err.message || 'Login failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
-      window.location.href =
-        res.user.role === 'ADMIN'
-          ? '/admin/dashboard'
-          : '/agent/courses';
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 gap-6 px-4">

@@ -17,14 +17,14 @@ export default function AgentLayout({
   useEffect(() => {
     if (loading) return;
 
-    if (!user) {
-      router.replace('/login');
-      return;
-    }
+ if (!user) {
+  window.location.href = '/login';
+  return;
+}
 
-    if (user.role !== 'AGENT') {
-      window.location.href = '/admin/dashboard';;
-    }
+if (user.role !== 'AGENT') {
+  window.location.href = '/admin/dashboard';
+}
   }, [user, loading, router]);
 
   if (loading || !user || user.role !== 'AGENT') {
