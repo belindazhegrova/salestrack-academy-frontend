@@ -19,12 +19,6 @@ export function useAuth() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const cached = localStorage.getItem('user');
-
-        if (cached) {
-          setUser(JSON.parse(cached)); 
-        }
-
         const data = await getMe();
         localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
@@ -33,7 +27,7 @@ export function useAuth() {
         setUser(null);
         localStorage.removeItem('user');
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
