@@ -11,12 +11,12 @@ export default function Home() {
   useEffect(() => {
     if (loading) return;
 
-    if (!user) {
-      router.replace('/login');
-    } else if (user.role === 'ADMIN') {
-     window.location.href = '/admin/dashboard';
+    if (user?.role === 'ADMIN') {
+      window.location.href = '/admin/dashboard';
+    } else if (user?.role === 'AGENT') {
+      window.location.href = '/agent/courses';
     } else {
-     window.location.href = '/agent/courses';
+      window.location.href = '/login';
     }
   }, [user, loading]);
 

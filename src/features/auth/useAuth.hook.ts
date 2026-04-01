@@ -19,13 +19,19 @@ export function useAuth() {
   useEffect(() => {
     const initAuth = async () => {
       try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
         const data = await getMe();
-        localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
-      } catch (e) {
-        console.log('Auth failed');
+      } catch {
         setUser(null);
-        localStorage.removeItem('user');
+        localStorage.removeItem('token');
       } finally {
         setLoading(false);
       }
