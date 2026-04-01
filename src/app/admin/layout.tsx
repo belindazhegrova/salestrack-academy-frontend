@@ -25,15 +25,18 @@ if (!user) {
 if (user.role !== 'ADMIN') {
   window.location.href = '/agent/courses';
 }
-  }, [user, loading, router]);
+}, [user, loading, router]);
 
-  if (loading || !user || user.role !== 'ADMIN') {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Loading dashboard...</p>
-      </div>
-    );
-  }
+if (loading || !user || user.role !== 'ADMIN') {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div
+        className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300"
+        style={{ borderTopColor: 'var(--primary)' }}
+      />
+    </div>
+  );
+}
 
   return (
     <div className="flex min-h-screen">
