@@ -26,6 +26,12 @@ const handleLogin = async () => {
   
     localStorage.setItem('user', JSON.stringify(res.user));
 
+        window.location.assign(
+      res.user.role === 'ADMIN'
+        ? '/admin/dashboard'
+        : '/agent/courses'
+    );
+
     if (res.user.role === 'ADMIN') {
       window.location.href = '/admin/dashboard';
     } else {
