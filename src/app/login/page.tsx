@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { login, persistAuthSession } from '@/features/auth/auth.service';
 import AuthCard from '@/components/auth/AuthCard';
 

@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { logout } from '@/features/auth/auth.service';
+import { logout ,clearAuthSession} from '@/features/auth/auth.service';
+
 
 type Role = 'ADMIN' | 'AGENT';
 
@@ -15,17 +16,17 @@ export default function Header({ role, userEmail }: HeaderProps) {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await logout();
-    } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
-  };
+const handleLogout = async () => {
+  try {
+    setIsLoggingOut(true);
+    await logout(); 
+  } catch (error) {
+    console.error('Logout failed:', error);
+  } finally {
+    clearAuthSession(); 
+    window.location.href = '/login';
+  }
+};
 
   const isAdmin = role === 'ADMIN';
 
